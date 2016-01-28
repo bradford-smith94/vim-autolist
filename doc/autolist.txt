@@ -1,0 +1,13 @@
+*autolist.txt* Automatically continue lists.
+*autolist*
+*vim-autolist*
+*autolist.vim*
+
+==============================================================================
+INTRODUCTION
+
+This plugin automatically continues lists.
+
+------------------------------------------------------------------------------
+
+ vim:tw=78:ft=help:norl:
