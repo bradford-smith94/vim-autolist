@@ -6,15 +6,15 @@
 " credit: https://gist.github.com/sedm0784/dffda43bcfb4728f8e90
 function! s:auto_list()
     let l:preceding_line = getline(line(".") - 1)
-    if l:preceding_line =~ '\v^\d+\.\s.'
+    if l:preceding_line =~ '^\s*\d+[\.)]\s'
         " The previous line matches any number of digits followed by a full-stop
         " followed by one character of whitespace followed by one more character
         " i.e. it is an ordered list item
 
         " Continue the list
-        let l:list_index = matchstr(l:preceding_line, '\v^\d*')
+        let l:list_index = matchstr(l:preceding_line, '\d*')
         call setline(".", l:list_index + 1. ". ")
-    elseif l:preceding_line =~ '\v^\d+\.\s$'
+    elseif l:preceding_line =~ '^\s*\d+[\.)]\s$'
         " The previous line matches any number of digits followed by a full-stop
         " followed by one character of whitespace followed by nothing
         " i.e. it is an empty ordered list item
