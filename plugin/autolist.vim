@@ -36,6 +36,3 @@ endfunction
 " enable for <Enter> in Insert and o in Normal
 inoremap <buffer> <CR> <CR><Esc>:call <SID>auto_list()<CR>A
 nnoremap <buffer> o o<Esc>:call <SID>auto_list()<CR>A
-
-"use the following for adding Filetype specific mappings
-"autocmd Filetype <ft> <map> <buffer> ...
