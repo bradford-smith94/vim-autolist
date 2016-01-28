@@ -3,17 +3,17 @@
 "= script functions ============================================================
 
 " credit: https://gist.github.com/sedm0784/dffda43bcfb4728f8e90
-function! s:auto_list()
+function! s:autolist_down()
     let l:preceding_line = getline(line(".") - 1)
-    if l:preceding_line =~ '^\s*\d+[\.)]\s'
+    if l:preceding_line =~ '\v^\s*\d+\.\s'
         " The previous line matches any number of digits followed by a full-stop
         " followed by one character of whitespace followed by one more character
         " i.e. it is an ordered list item
 
         " Continue the list
-        let l:list_index = matchstr(l:preceding_line, '\d*')
+        let l:list_index = matchstr(l:preceding_line, '\v^\s*\zs\d*')
         call setline(".", l:list_index + 1. ". ")
-    elseif l:preceding_line =~ '^\s*\d+[\.)]\s$'
+    elseif l:preceding_line =~ '\v^\s*\d+\.\s$'
         " The previous line matches any number of digits followed by a full-stop
         " followed by one character of whitespace followed by nothing
         " i.e. it is an empty ordered list item
@@ -36,9 +36,10 @@ endfunction
 
 
 "= global functions ============================================================
+
 function! g:AutolistNewLineBelow()
-    execute "normal! o<Esc>"
-    call <SID>auto_list()
+    execute "normal! o"
+    call <SID>autolist_down()
     startinsert!
 endfunction
 
