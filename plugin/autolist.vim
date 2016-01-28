@@ -1,7 +1,6 @@
 "autolist.vim
 
-" Auto lists: Automatically continue/end lists by adding markers if the
-" previous line is a list item, or removing them when they are empty
+"= script functions ============================================================
 
 " credit: https://gist.github.com/sedm0784/dffda43bcfb4728f8e90
 function! s:auto_list()
@@ -33,6 +32,26 @@ function! s:auto_list()
     endif
 endfunction
 
-" enable for <Enter> in Insert and o in Normal
-inoremap <buffer> <CR> <CR><Esc>:call <SID>auto_list()<CR>A
-nnoremap <buffer> o o<Esc>:call <SID>auto_list()<CR>A
+"===============================================================================
+
+
+"= global functions ============================================================
+function! g:AutolistNewLineBelow()
+    execute "normal! o<Esc>"
+    call <SID>auto_list()
+    startinsert!
+endfunction
+
+function! g:AutolistNewLineAbove()
+    execute "normal! O"
+endfunction
+
+function! g:AutolistIndent()
+    execute "normal! a<Tab>"
+endfunction
+
+function! g:AutolistBackspace()
+    execute "normal! a<BS>"
+endfunction
+
+"===============================================================================

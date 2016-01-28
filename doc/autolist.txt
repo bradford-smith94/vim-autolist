@@ -9,5 +9,26 @@ INTRODUCTION
 This plugin automatically continues lists.
 
 ------------------------------------------------------------------------------
+CONFIGURATION
+
+This plugin exposes global functions:
+    g:AutolistNewLineAbove()
+    g:AutolistNewLineBelow()
+    g:AutolistBackspace()
+    g:AutolistIndent()
+
+These functions need to be mapped to keys or called directly in order to be
+used.
+
+A default example would be: >
+
+    inoremap <CR> <Esc>:call g:AutolistNewLineBelow()<CR>
+    nnoremap o :call g:AutolistNewLineBelow()<CR>
+    nnoremap O :call g:AutolistNewLineAbove()<CR>
+    inoremap <Tab> <Esc>:call g:AutolistIndent()<CR>
+    inoremap <BS> <Esc>:call g:AutolistBackspace()<CR>
+<
+
+------------------------------------------------------------------------------
 
  vim:tw=78:ft=help:norl:
