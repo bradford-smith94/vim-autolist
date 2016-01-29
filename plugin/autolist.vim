@@ -12,7 +12,9 @@ function! s:autolist_down()
 
         " Continue the list
         let l:list_index = matchstr(l:preceding_line, '\v^\s*\zs\d*')
-        call setline(".", l:list_index + 1. ". ")
+        let l:list_index = l:list_index + 1
+        let l:list_indent = matchstr(l:preceding_line, '\v^\s*')
+        call setline(".", l:list_indent. l:list_index. ". ")
     elseif l:preceding_line =~ '\v^\s*\d+\.\s$'
         " The previous line matches any number of digits followed by a full-stop
         " followed by one character of whitespace followed by nothing
