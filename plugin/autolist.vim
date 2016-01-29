@@ -22,15 +22,12 @@ function! s:autolist_down()
 
         " End the list and clear the empty item
         call setline(line(".") - 1, "")
-    elseif l:preceding_line[0] == "-" && l:preceding_line[1] == " "
+    elseif l:preceding_line =~ '\v^\s*\-\s\S+'
         " The previous line is an unordered list item
-        if strlen(l:preceding_line) == 2
-            " ...which is empty: end the list and clear the empty item
-            call setline(line(".") - 1, "")
-        else
-            " ...which is not empty: continue the list
-            call setline(".", "- ")
-        endif
+        let l:list_indent = matchstr(l:preceding_line, '\v^\s*')
+        call setline(".", l:list_indent. "- ")
+    elseif l:preceding_line =~ '\v^\s*\-\s$'
+        call setline(line(".") - 1, "")
     endif
 endfunction
 
