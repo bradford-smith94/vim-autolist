@@ -36,6 +36,25 @@ function! s:autolist_down()
     endif
 endfunction
 
+function! s:autolist_up()
+    call <SID>autolist_down()
+    if getline(".") =~ '\v\s*'
+        " Fell into a case where we are inserting a new line above the rest of
+        " the list, we need to check the line below this one
+        let l:next_line = getline(line(".") + 1)
+        if l:next_line =~ '\v^\s*\d+\.\s\S+'
+            let l:list_index = matchstr(l:next_line, '\v^\s*\zs\d*')
+            let l:list_index = l:list_index - 1
+            let l:list_indent = matchstr(l:next_line, '\v^\s*')
+            call setline(".", l:list_indent. l:list_index. ". ")
+        elseif l:next_line =~ '\v^\s*\-\s\S+'
+            let l:list_indent = matchstr(l:next_line, '\v^\s*')
+            call setline(".", l:list_indent. "- ")
+        endif
+    endif
+    " Renumber the list below this item (if it's a numbered list)
+endfunction
+
 "===============================================================================
 
 
@@ -49,6 +68,8 @@ endfunction
 
 function! g:AutolistNewLineAbove()
     execute "normal! O"
+    call <SID>autolist_up()
+    startinsert!
 endfunction
 
 function! g:AutolistIndent()
