@@ -58,25 +58,25 @@ endfunction
 "===============================================================================
 
 
-"= global functions ============================================================
+"= helper functions ============================================================
 
-function! g:AutolistNewLineBelow()
+function! s:AutolistNewLineBelow()
     execute "normal! o"
     call <SID>autolist_down()
     startinsert!
 endfunction
 
-function! g:AutolistNewLineAbove()
+function! s:AutolistNewLineAbove()
     execute "normal! O"
     call <SID>autolist_up()
     startinsert!
 endfunction
 
-function! g:AutolistIndent()
+function! s:AutolistIndent()
     execute "normal! a<Tab>"
 endfunction
 
-function! g:AutolistBackspace()
+function! s:AutolistBackspace()
     execute "normal! a<BS>"
 endfunction
 
@@ -85,9 +85,9 @@ endfunction
 
 "= command mappings ============================================================
 
-command! AutolistNewLineBelow call g:AutolistNewLineBelow()
-command! AutolistNewLineAbove call g:AutolistNewLineAbove()
-command! AutolistIndent call g:AutolistIndent()
-command! AutolistBackspace call g:AutolistBackspace()
+command! AutolistNewLineBelow call <SID>AutolistNewLineBelow()
+command! AutolistNewLineAbove call <SID>AutolistNewLineAbove()
+command! AutolistIndent call <SID>AutolistIndent()
+command! AutolistBackspace call <SID>AutolistBackspace()
 
 "===============================================================================

@@ -18,12 +18,12 @@ Or you can use the Pathogen method:
 Once installed and help tags have been generated you can read the help with `:help autolist`.
 
 ##Usage
-This plugin exposes global functions:
+This plugin exposes commands:
 ```
-    g:AutolistNewLineAbove()
-    g:AutolistNewLineBelow()
-    g:AutolistBackspace()
-    g:AutolistIndent()
+    :AutolistNewLineAbove
+    :AutolistNewLineBelow
+    :AutolistBackspace
+    :AutolistIndent
 ```
 
 These functions need to be mapped to keys or called directly in order to be
@@ -32,17 +32,17 @@ used.
 A default mapping example would be:
 ```
     "these are mapped for all filetypes all the time
-    inoremap <CR> <Esc>:call g:AutolistNewLineBelow()<CR>
-    nnoremap o :call g:AutolistNewLineBelow()<CR>
-    nnoremap O :call g:AutolistNewLineAbove()<CR>
-    inoremap <Tab> <Esc>:call g:AutolistIndent()<CR>
-    inoremap <BS> <Esc>:call g:AutolistBackspace()<CR>
+    inoremap <CR> <Esc>:AutolistNewLineBelow<CR>
+    nnoremap o :AutolistNewLineBelow<CR>
+    nnoremap O :AutolistNewLineAbove<CR>
+    inoremap <Tab> <Esc>:AutolistIndent<CR>
+    inoremap <BS> <Esc>:AutolistBackspace<CR>
 ```
 
-To call a function directly:
+To use a command directly:
 ```
     "type something like this then hit enter
-    :call g:AutolistNewLineBelow()
+    :AutolistNewLineBelow
 ```
 
 ##Configuration
@@ -51,25 +51,24 @@ In order to enable this plugin for specific filetypes you can make your
 mapping inside an autocmd; for example, the following makes a buffer local
 mapping for the enter key only in markdown files:
 ```
-    autocmd Filetype markdown inoremap <buffer> <CR> <Esc>:call
-    g:AutolistNewLineBelow()<CR>
+    autocmd Filetype markdown inoremap <buffer> <CR> <Esc>:AutolistNewLineBelow<CR>
 ```
 
 The other way to make filetype specific mappings would be to put the mapping in
 an ftplugin file.
 ```
     "in ~/.vim/ftplugin/markdown.vim
-    inoremap <buffer> <CR> <Esc>:call g:AutolistNewLineBelow()<CR>
+    inoremap <buffer> <CR> <Esc>:AutolistNewLineBelow<CR>
 ```
 
 ##Issues
 
-`g:AutolistIndent()` and `g:AutolistBackspace()` may have unintended results.
+`:AutolistIndent` and `:AutolistBackspace` may have unintended results.
 
 Also it needs support for more list markers, only two styles are valid right now:
 
-`1. ` for numbered, and `- ` for unordered.
+'`1. `' for numbered, and '`- `' for unordered.
 
 
 ##Credits
-I got the idea for this plugin from [sedm0784](https://www.github.com/sedm0784)'s gist [https://gist.github.com/sedm0784/dffda43bcfb4728f8e90](https://gist.github.com/sedm0784/dffda43bcfb4728f8e90).
+I got the idea for this plugin from [sedm0784](https://www.github.com/sedm0784)'s gist [Vim Auto List Completion](https://gist.github.com/sedm0784/dffda43bcfb4728f8e90).
