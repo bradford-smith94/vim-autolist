@@ -60,3 +60,13 @@ function! g:AutolistBackspace()
 endfunction
 
 "===============================================================================
+
+
+"= command mappings ============================================================
+
+command! AutolistNewLineBelow call g:AutolistNewLineBelow()
+command! AutolistNewLineAbove call g:AutolistNewLineAbove()
+command! AutolistIndent call g:AutolistIndent()
+command! AutolistBackspace call g:AutolistBackspace()
+
+"===============================================================================
