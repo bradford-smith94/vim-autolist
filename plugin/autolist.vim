@@ -1,5 +1,10 @@
 "autolist.vim
 
+if exists('g:loaded_autolist') || &cp
+    finish
+endif
+let g:loaded_autolist = 1
+
 "= script functions ============================================================
 
 " credit: https://gist.github.com/sedm0784/dffda43bcfb4728f8e90
