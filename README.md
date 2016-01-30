@@ -64,9 +64,6 @@ an ftplugin file.
 
 ##Issues
 
-Currently the only function working is `g:AutolistNewLineBelow()`.
-
-`g:AutolistNewLineAbove()` will have no effect.
 `g:AutolistIndent()` and `g:AutolistBackspace()` may have unintended results.
 
 Also it needs support for more list markers, only two styles are valid right now:
