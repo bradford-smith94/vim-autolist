@@ -60,22 +60,35 @@ endfunction
 
 "= helper functions ============================================================
 
+"for creating a new line with the `o` key
 function! s:AutolistNewLineBelow()
     execute "normal! o"
     call <SID>autolist_down()
     startinsert!
 endfunction
 
+"for creating a new line with the return key
+function! s:AutolistReturn()
+    execute "normal! <CR>"
+    call <SID>autolist_down()
+    startinsert!
+endfunction
+
+"for creating a new line with the `O` key
 function! s:AutolistNewLineAbove()
     execute "normal! O"
     call <SID>autolist_up()
     startinsert!
 endfunction
 
+"for hitting tab (if in a list and positioned at the start indent one level)
+"NOTE: <Esc>>>a
 function! s:AutolistIndent()
     execute "normal! a<Tab>"
 endfunction
 
+"for hitting backspace (if in a list and positioned at the start unindent)
+"NOTE: <Esc><<a
 function! s:AutolistBackspace()
     execute "normal! a<BS>"
 endfunction
@@ -86,6 +99,7 @@ endfunction
 "= command mappings ============================================================
 
 command! AutolistNewLineBelow call <SID>AutolistNewLineBelow()
+command! AutolistReturn call <SID>AutolistReturn()
 command! AutolistNewLineAbove call <SID>AutolistNewLineAbove()
 command! AutolistIndent call <SID>AutolistIndent()
 command! AutolistBackspace call <SID>AutolistBackspace()
