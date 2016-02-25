@@ -69,9 +69,9 @@ endfunction
 
 "for creating a new line with the return key
 function! s:AutolistReturn()
-    execute "normal! <CR>"
+    execute "normal! a\<CR>"
     call <SID>autolist_down()
-    startinsert!
+    startinsert
 endfunction
 
 "for creating a new line with the `O` key
@@ -84,13 +84,13 @@ endfunction
 "for hitting tab (if in a list and positioned at the start indent one level)
 "NOTE: <Esc>>>a
 function! s:AutolistIndent()
-    execute "normal! a<Tab>"
+    execute "normal! a\<Tab>"
 endfunction
 
 "for hitting backspace (if in a list and positioned at the start unindent)
 "NOTE: <Esc><<a
 function! s:AutolistBackspace()
-    execute "normal! a<BS>"
+    execute "normal! a\<BS>"
 endfunction
 
 "===============================================================================
