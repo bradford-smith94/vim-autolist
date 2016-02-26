@@ -22,6 +22,7 @@ This plugin exposes commands: >
 
     AutolistNewLineAbove
     AutolistNewLineBelow
+    AutolistReturn
     AutolistBackspace
     AutolistIndent
 <
@@ -32,7 +33,7 @@ used.
 A default |mapping| example would be: >
 
     "these are mapped for all filetypes all the time
-    inoremap <CR> <Esc>:AutolistNewLineBelow<CR>
+    inoremap <CR> <Esc>:AutolistReturn<CR>
     nnoremap o :AutolistNewLineBelow<CR>
     nnoremap O :AutolistNewLineAbove<CR>
     inoremap <Tab> <Esc>:AutolistIndent<CR>
@@ -52,15 +53,14 @@ In order to enable this plugin for specific |filetypes| you can make your
 mapping inside an |autocmd|; for example, the following makes a buffer local
 mapping for the enter key only in markdown files: >
 
-    autocmd Filetype markdown inoremap <buffer> <CR>
-    <Esc>:AutolistNewLineBelow<CR>
+    autocmd Filetype markdown inoremap <buffer> <CR> <Esc>:AutolistReturn<CR>
 <
 
 The other way to make filetype specific mappings would be to put the mapping in
 an |ftplugin| file. >
 
     "in ~/.vim/ftplugin/markdown.vim
-    inoremap <buffer> <CR> <Esc>:AutolistNewLineBelow<CR>
+    inoremap <buffer> <CR> <Esc>:AutolistReturn<CR>
 <
 
 ------------------------------------------------------------------------------
