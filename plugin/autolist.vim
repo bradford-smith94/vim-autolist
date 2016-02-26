@@ -69,9 +69,25 @@ endfunction
 
 "for creating a new line with the return key
 function! s:AutolistReturn()
-    execute "normal! a\<CR>"
-    call <SID>autolist_down()
-    startinsert
+    "if cursor is at the end of the line
+    if (col(".") == col("$") - 1)
+        "enter a newline call function
+        execute "normal! a\<CR>"
+        call <SID>autolist_down()
+        startinsert!
+    elseif (col(".") == 1) "if cursor is at the start
+        "short deletes are saved in the "- register
+        execute "normal! Di\<CR>"
+        call <SID>autolist_down()
+        execute "normal! $\"-pa"
+        startinsert
+    else "else cursor is somewhere in the middle of the line
+        "short deletes are saved in the "- register
+        execute "normal! lDa\<CR>"
+        call <SID>autolist_down()
+        execute "normal! $\"-pa"
+        startinsert
+    endif
 endfunction
 
 "for creating a new line with the `O` key
