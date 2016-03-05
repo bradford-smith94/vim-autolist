@@ -69,8 +69,8 @@ endfunction
 
 "for creating a new line with the return key
 function! s:AutolistReturn()
-    "if cursor is at the end of the line
-    if (col(".") == col("$") - 1)
+    "if cursor is at the end of the line or the line is empty
+    if (col(".") == col("$") - 1 || getline(".") == "")
         "enter a newline call function
         execute "normal! a\<CR>"
         call <SID>autolist_down()
