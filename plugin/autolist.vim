@@ -5,6 +5,16 @@ if exists('g:loaded_autolist') || &cp
 endif
 let g:loaded_autolist = 1
 
+"= variables ===================================================================
+
+if !exists('g:autolist_numbered_markers')
+    let g:autolist_numbered_markers = ['#.', '#)', '#-']
+endif
+
+if !exists('g:autolist_unordered_markers')
+    let g:autolist_unordered_markers = ['-', '*']
+endif
+
 "= script functions ============================================================
 
 " credit: https://gist.github.com/sedm0784/dffda43bcfb4728f8e90

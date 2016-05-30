@@ -56,11 +56,19 @@ mapping for the enter key only in markdown files: >
     autocmd Filetype markdown inoremap <buffer> <CR> <Esc>:AutolistReturn<CR>
 <
 
-The other way to make filetype specific mappings would be to put the mapping in
-an |ftplugin| file. >
+The other way to make filetype specific mappings would be to put the mapping 
+in an |ftplugin| file. >
 
     "in ~/.vim/ftplugin/markdown.vim
     inoremap <buffer> <CR> <Esc>:AutolistReturn<CR>
+<
+
+The list markers that are detected by autolist can be configured. The 
+following variables will set the recognized markers for ordered and unordered 
+lists respectively, their default values are shown. >
+
+    g:autolist_numbered_markers = ['#.', '#)', '#-']
+    g:autolist_unordered_markers = ['-', '*']
 <
 
 ------------------------------------------------------------------------------
@@ -68,10 +76,11 @@ ISSUES                                                       *autolist-issues*
 
 :AutolistIndent and :AutolistBackspace may have unintended results.
 
-Also it needs support for more list markers, only two styles are valid right now:
+Also it needs support for more list markers, only two styles are valid right 
+now:
 
-`1. ` for numbered, and `- ` for unordered.
+`1. ` for numbered, and `- ` for unordered. -- In Progress
 
-------------------------------------------------------------------------------
+==============================================================================
 
  vim:tw=78:ft=help:norl:
