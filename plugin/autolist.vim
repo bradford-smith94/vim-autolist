@@ -17,6 +17,40 @@ endif
 
 "= script functions ============================================================
 
+" detect the list type and return the appropriate list marker
+function s:autolist_detect()
+    let l:preceding_line = getline(line(".") - 1)
+    let l:list_indent = matchstr(l:preceding_line, '\v^\s*')
+
+    "check for numbered markers
+    for l:marker in g:autolist_numbered_markers
+        "substitute the '#' character for regex one or more digits
+        let l:marker = substitute(l:marker, "#", "\d+", "")
+
+        if l:preceding_line =~ '\v^\s*' . l:marker . '\s+\S+'
+            " matched a non-empty list item
+            let l:list_index = matchstr(l:preceding_line, '\v\s*\zs\d*')
+            let l:list_index = l:list_index + 1
+            let l:marker = substitute(l:marker, "\d+", l:list_index, "")
+            return l:list_indent . l:marker . " "
+        elseif l:preceding_line =~ '\v^\s*' . l:marker . '\s*$'
+            " matched an empty list item
+        endif
+    endfor
+
+    "check for unordered markers
+    for l:marker in g:autolist_unordered_markers
+        if l:preceding_line =~ '\v^\s*' . l:marker . '\s+\S+'
+            " matched a non-empty list item
+            return l:list_indent . l:marker
+        elseif l:preceding_line =~ '\v^\s*' . l:marker . '\s*$'
+            " matched an empty list item
+        endif
+    endfor
+
+    return ""
+endfunction
+
 " credit: https://gist.github.com/sedm0784/dffda43bcfb4728f8e90
 function! s:autolist_down()
     let l:preceding_line = getline(line(".") - 1)
@@ -62,7 +96,6 @@ function! s:autolist_up()
             call setline(".", l:list_indent. "- ")
         endif
     endif
-    " Renumber the list below this item (if it's a numbered list)
 endfunction
 
 "===============================================================================
