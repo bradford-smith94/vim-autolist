@@ -77,15 +77,19 @@ function! s:AutolistReturn()
         startinsert!
     elseif (col(".") == 1) "if cursor is at the start
         "short deletes are saved in the "- register
+        let l:tmp = @-
         execute "normal! Di\<CR>"
         call <SID>autolist_down()
         execute "normal! $\"-pa"
+        let @- = l:tmp
         startinsert
     else "else cursor is somewhere in the middle of the line
         "short deletes are saved in the "- register
+        let l:tmp = @-
         execute "normal! lDa\<CR>"
         call <SID>autolist_down()
         execute "normal! $\"-pa"
+        let @- = l:tmp
         startinsert
     endif
 endfunction
