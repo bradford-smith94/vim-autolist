@@ -25,25 +25,27 @@ function s:autolist_detect()
     "check for numbered markers
     for l:marker in g:autolist_numbered_markers
         "substitute the '#' character for regex one or more digits
-        let l:marker = substitute(l:marker, "#", "\d+", "")
+        "for some reason two pairs of backslashes were needed
+        let l:marker = substitute(l:marker, "#", "\\\\d\\\\+", "")
 
-        if l:preceding_line =~ '\v^\s*' . l:marker . '\s+\S+'
+        if l:preceding_line =~ '\v^\s*\V' . l:marker . '\v\s+\S+'
             " matched a non-empty list item
-            let l:list_index = matchstr(l:preceding_line, '\v\s*\zs\d*')
+            let l:list_index = matchstr(l:preceding_line, '\v\s*\zs\d*') "TODO: this assumes marker starts with a number
             let l:list_index = l:list_index + 1
-            let l:marker = substitute(l:marker, "\d+", l:list_index, "")
+            "for some reason two pairs of backslashes were needed
+            let l:marker = substitute(l:marker, "\\\\d\\\\+", l:list_index, "")
             return l:list_indent . l:marker . " "
-        elseif l:preceding_line =~ '\v^\s*' . l:marker . '\s*$'
+        elseif l:preceding_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
             " matched an empty list item
         endif
     endfor
 
     "check for unordered markers
     for l:marker in g:autolist_unordered_markers
-        if l:preceding_line =~ '\v^\s*' . l:marker . '\s+\S+'
+        if l:preceding_line =~ '\v^\s*\V' . l:marker . '\v\s+\S+'
             " matched a non-empty list item
             return l:list_indent . l:marker
-        elseif l:preceding_line =~ '\v^\s*' . l:marker . '\s*$'
+        elseif l:preceding_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
             " matched an empty list item
         endif
     endfor
