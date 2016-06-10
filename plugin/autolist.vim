@@ -140,18 +140,6 @@ function! s:AutolistNewLineAbove()
     startinsert!
 endfunction
 
-"for hitting tab (if in a list and positioned at the start indent one level)
-"NOTE: <Esc>>>a
-function! s:AutolistIndent()
-    execute "normal! a\<Tab>"
-endfunction
-
-"for hitting backspace (if in a list and positioned at the start unindent)
-"NOTE: <Esc><<a
-function! s:AutolistBackspace()
-    execute "normal! a\<BS>"
-endfunction
-
 "===============================================================================
 
 
@@ -160,7 +148,5 @@ endfunction
 command! AutolistNewLineBelow call <SID>AutolistNewLineBelow()
 command! AutolistReturn call <SID>AutolistReturn()
 command! AutolistNewLineAbove call <SID>AutolistNewLineAbove()
-command! AutolistIndent call <SID>AutolistIndent()
-command! AutolistBackspace call <SID>AutolistBackspace()
 
 "===============================================================================

@@ -9,11 +9,12 @@ INTRODUCTION
 This plugin automatically continues lists.
 
 ------------------------------------------------------------------------------
-Contents:
+CONTENTS:
 
     Usage...............|autolist-usage|
     Configuration.......|autolist-config|
     Issues..............|autolist-issues|
+    Credits.............|autolist-credits|
 
 ------------------------------------------------------------------------------
 USAGE                                                         *autolist-usage*
@@ -23,8 +24,6 @@ This plugin exposes commands: >
     AutolistNewLineAbove
     AutolistNewLineBelow
     AutolistReturn
-    AutolistBackspace
-    AutolistIndent
 <
 
 These functions need to be mapped to keys or called directly in order to be
@@ -36,8 +35,6 @@ A default |mapping| example would be: >
     inoremap <CR> <Esc>:AutolistReturn<CR>
     nnoremap o :AutolistNewLineBelow<CR>
     nnoremap O :AutolistNewLineAbove<CR>
-    inoremap <Tab> <Esc>:AutolistIndent<CR>
-    inoremap <BS> <Esc>:AutolistBackspace<CR>
 <
 
 To use a command directly: >
@@ -74,12 +71,17 @@ lists respectively, their default values are shown. >
 ------------------------------------------------------------------------------
 ISSUES                                                       *autolist-issues*
 
-:AutolistIndent and :AutolistBackspace may have unintended results.
-
 Also it needs support for more list markers, only two styles are valid right 
 now:
 
 `1. ` for numbered, and `- ` for unordered. -- In Progress
+
+------------------------------------------------------------------------------
+CREDITS                                                     *autolist-credits*
+
+The idea for this plugin came from a gist posted by Github user sedm0784.
+See: https://www.github.com/sedm0784
+See: https://www.gist.github.com/sedm0784/dffda43bcfb4728f8e90
 
 ==============================================================================
 

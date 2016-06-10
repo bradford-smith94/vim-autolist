@@ -23,8 +23,6 @@ This plugin exposes commands:
     :AutolistNewLineAbove
     :AutolistNewLineBelow
     :AutolistReturn
-    :AutolistBackspace
-    :AutolistIndent
 ```
 
 These functions need to be mapped to keys or called directly in order to be
@@ -36,8 +34,6 @@ A default mapping example would be:
     inoremap <CR> <Esc>:AutolistReturn<CR>
     nnoremap o :AutolistNewLineBelow<CR>
     nnoremap O :AutolistNewLineAbove<CR>
-    inoremap <Tab> <Esc>:AutolistIndent<CR>
-    inoremap <BS> <Esc>:AutolistBackspace<CR>
 ```
 
 To use a command directly:
@@ -64,9 +60,7 @@ an ftplugin file.
 
 ##Issues
 
-`:AutolistIndent` and `:AutolistBackspace` may have unintended results.
-
-Also it needs support for more list markers, only two styles are valid right now:
+Needs support for more list markers, only two styles are valid right now:
 
 '`1. `' for numbered, and '`- `' for unordered.
 
