@@ -15,15 +15,21 @@ if !exists('g:autolist_unordered_markers')
     let g:autolist_unordered_markers = ['-', '*']
 endif
 
+"TODO: run a validation on markers, numbered must contain a '#' and neither can
+"       match s:empty_item
+
 "variables (constants) for defining check directions for s:autolist_detect
 let s:dir_down = 1
 let s:dir_up = 0
 
+"variable (constant) for matching an empty list item
+let s:empty_item = "emptylistitem"
+
 "= script functions ============================================================
 
-" detect the list type and return the appropriate list marker
-" param: dir - the direction to search in, the value of this parameter should
-" only be s:dir_down or s:dir_up
+"detect the list type and return the appropriate list marker
+"param: dir - the direction to search in, the value of this parameter should
+"only be s:dir_down or s:dir_up
 function s:autolist_detect(dir)
     "error check parameter
     if a:dir != s:dir_up && a:dir != s:dir_down
@@ -47,7 +53,7 @@ function s:autolist_detect(dir)
         let l:marker = substitute(l:marker, "#", "\\\\d\\\\+", "")
 
         if l:check_line =~ '\v^\s*\V' . l:marker . '\v\s+\S+'
-            " matched a non-empty list item
+            "matched a non-empty list item
             let l:marker = l:orig_marker
             "again substitute needed two pairs of backslashes
             let l:marker = substitute(l:marker, "#.*", "\\\\zs\\\\d\\\\*", "")
@@ -65,66 +71,53 @@ function s:autolist_detect(dir)
             let l:marker = substitute(l:marker, "#", l:list_index, "")
             return l:list_indent . l:marker . " "
         elseif l:check_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
-            " matched an empty list item
+            "matched an empty list item
+            return s:empty_item
         endif
     endfor
 
     "check for unordered markers
     for l:marker in g:autolist_unordered_markers
         if l:check_line =~ '\v^\s*\V' . l:marker . '\v\s+\S+'
-            " matched a non-empty list item
-            return l:list_indent . l:marker
+            "matched a non-empty list item
+            return l:list_indent . l:marker . " "
         elseif l:check_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
-            " matched an empty list item
+            "matched an empty list item
+            return s:empty_item
         endif
     endfor
 
     return ""
 endfunction
 
-" credit: https://gist.github.com/sedm0784/dffda43bcfb4728f8e90
+"continue a list by checking the previous line (insert item below)
 function! s:autolist_down()
-    let l:preceding_line = getline(line(".") - 1)
-    if l:preceding_line =~ '\v^\s*\d+\.\s\S+'
-        " The previous line matches any number of digits followed by a full-stop
-        " followed by one character of whitespace followed by one more character
-        " i.e. it is an ordered list item
+    let l:marker = <SID>autolist_detect(s:dir_down)
 
-        " Continue the list
-        let l:list_index = matchstr(l:preceding_line, '\v^\s*\zs\d*')
-        let l:list_index = l:list_index + 1
-        let l:list_indent = matchstr(l:preceding_line, '\v^\s*')
-        call setline(".", l:list_indent. l:list_index. ". ")
-    elseif l:preceding_line =~ '\v^\s*\d+\.\s$'
-        " The previous line matches any number of digits followed by a full-stop
-        " followed by one character of whitespace followed by nothing
-        " i.e. it is an empty ordered list item
-
-        " End the list and clear the empty item
-        call setline(line(".") - 1, "")
-    elseif l:preceding_line =~ '\v^\s*\-\s\S+'
-        " The previous line is an unordered list item
-        let l:list_indent = matchstr(l:preceding_line, '\v^\s*')
-        call setline(".", l:list_indent. "- ")
-    elseif l:preceding_line =~ '\v^\s*\-\s$'
-        call setline(line(".") - 1, "")
+    "don't do anything if we didn't match a list
+    if (l:marker != "")
+        if (l:marker == s:empty_item)
+            "previous line was an empty item, clear it
+            call setline(line(".") - 1, "")
+        else
+            "marker is next list item, continue the list
+            call setline(".", l:marker)
+        endif
     endif
 endfunction
 
+"continue a list by checking the next line (insert item above)
 function! s:autolist_up()
-    call <SID>autolist_down()
-    if getline(".") =~ '\v\s*'
-        " Fell into a case where we are inserting a new line above the rest of
-        " the list, we need to check the line below this one
-        let l:next_line = getline(line(".") + 1)
-        if l:next_line =~ '\v^\s*\d+\.\s\S+'
-            let l:list_index = matchstr(l:next_line, '\v^\s*\zs\d*')
-            let l:list_index = l:list_index - 1
-            let l:list_indent = matchstr(l:next_line, '\v^\s*')
-            call setline(".", l:list_indent. l:list_index. ". ")
-        elseif l:next_line =~ '\v^\s*\-\s\S+'
-            let l:list_indent = matchstr(l:next_line, '\v^\s*')
-            call setline(".", l:list_indent. "- ")
+    let l:marker = <SID>autolist_detect(s:dir_up)
+
+    "don't do anything if we didn't match a list
+    if (l:marker != "")
+        if (l:marker == s:empty_item)
+            "next line was an empty item, clear it
+            call setline(line(".") + 1, "")
+        else
+            "marker is a list item, continue the list
+            call setline(".", l:marker)
         endif
     endif
 endfunction

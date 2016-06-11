@@ -58,12 +58,5 @@ an ftplugin file.
     inoremap <buffer> <CR> <Esc>:AutolistReturn<CR>
 ```
 
-##Issues
-
-Needs support for more list markers, only two styles are valid right now:
-
-'`1. `' for numbered, and '`- `' for unordered.
-
-
 ##Credits
 I got the idea for this plugin from [sedm0784](https://www.github.com/sedm0784)'s gist [Vim Auto List Completion](https://gist.github.com/sedm0784/dffda43bcfb4728f8e90).

@@ -71,10 +71,9 @@ lists respectively, their default values are shown. >
 ------------------------------------------------------------------------------
 ISSUES                                                       *autolist-issues*
 
-Also it needs support for more list markers, only two styles are valid right 
-now:
-
-`1. ` for numbered, and `- ` for unordered. -- In Progress
+Autolist currently only inserts new markers followed by a single space 
+character although it will match list items with any amount of whitespace 
+characters, it should match the whitespace when inserting new items.
 
 ------------------------------------------------------------------------------
 CREDITS                                                     *autolist-credits*
