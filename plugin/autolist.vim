@@ -76,6 +76,8 @@ function s:autolist_detect(dir)
 
         if l:check_line =~ '\v^\s*\V' . l:marker . '\v\s+\S+'
             "matched a non-empty list item
+            let l:list_sep = matchstr(l:check_line, '\v^\s*\V' . l:marker . '\v\zs\s+')
+
             let l:marker = l:orig_marker
             "again substitute needed two pairs of backslashes
             let l:marker = substitute(l:marker, "#.*", "\\\\zs\\\\d\\\\*", "")
@@ -91,7 +93,7 @@ function s:autolist_detect(dir)
 
             let l:marker = l:orig_marker
             let l:marker = substitute(l:marker, "#", l:list_index, "")
-            return l:list_indent . l:marker . " "
+            return l:list_indent . l:marker . l:list_sep
         elseif l:check_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
             "matched an empty list item
             return s:empty_item
@@ -102,7 +104,9 @@ function s:autolist_detect(dir)
     for l:marker in g:autolist_unordered_markers
         if l:check_line =~ '\v^\s*\V' . l:marker . '\v\s+\S+'
             "matched a non-empty list item
-            return l:list_indent . l:marker . " "
+            let l:list_sep = matchstr(l:check_line, '\v^\s*\V' . l:marker . '\v\zs\s+')
+
+            return l:list_indent . l:marker . l:list_sep
         elseif l:check_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
             "matched an empty list item
             return s:empty_item

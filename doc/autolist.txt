@@ -71,9 +71,7 @@ lists respectively, their default values are shown. >
 ------------------------------------------------------------------------------
 ISSUES                                                       *autolist-issues*
 
-Autolist currently only inserts new markers followed by a single space 
-character although it will match list items with any amount of whitespace 
-characters, it should match the whitespace when inserting new items.
+None (I hope).
 
 ------------------------------------------------------------------------------
 CREDITS                                                     *autolist-credits*
