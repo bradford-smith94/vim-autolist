@@ -23,26 +23,26 @@ This plugin exposes commands:
     :AutolistNewLineAbove
     :AutolistNewLineBelow
     :AutolistReturn
-    :AutolistBackspace
-    :AutolistIndent
 ```
 
 These functions need to be mapped to keys or called directly in order to be
 used.
 
-A default mapping example would be:
+A simple mapping example would be:
 ```
     "these are mapped for all filetypes all the time
     inoremap <CR> <Esc>:AutolistReturn<CR>
     nnoremap o :AutolistNewLineBelow<CR>
     nnoremap O :AutolistNewLineAbove<CR>
-    inoremap <Tab> <Esc>:AutolistIndent<CR>
-    inoremap <BS> <Esc>:AutolistBackspace<CR>
 ```
 
-To use a command directly:
+This example makes the `Enter` key in insert mode call autolist as well as the
+`o` and `O` keys in normal mode, so that while you are normally typing out a
+list autolist will work automatically.
+
+Or to use a command directly:
 ```
-    "type something like this then hit enter
+    "just type something like this then hit enter
     :AutolistNewLineBelow
 ```
 
@@ -61,14 +61,25 @@ an ftplugin file.
     "in ~/.vim/ftplugin/markdown.vim
     inoremap <buffer> <CR> <Esc>:AutolistReturn<CR>
 ```
+###Defining custom markers
 
-##Issues
+The list markers that are detected by autolist can be configured. The
+following variables will set the recognized markers for ordered and unordered
+lists respectively, their default values are shown. Override these in your
+vimrc or other configuration file to change what markers autolist will
+recognize.
+```
+    g:autolist_numbered_markers = ['#.', '#)', '#-']
+    g:autolist_unordered_markers = ['-', '*']
+```
 
-`:AutolistIndent` and `:AutolistBackspace` may have unintended results.
+Numbered markers must contain a `#` character, this is where autolist will
+insert the list item number.
 
-Also it needs support for more list markers, only two styles are valid right now:
-
-'`1. `' for numbered, and '`- `' for unordered.
+Markers must not have the value `emptylistitem` (and why would they anyway?)
+this is the value autolist uses to internally recognize when it matches an
+empty item (line with just a marker and whitespace) so that it can delete it
+automatically.
 
 
 ##Credits
