@@ -15,15 +15,37 @@ if !exists('g:autolist_unordered_markers')
     let g:autolist_unordered_markers = ['-', '*']
 endif
 
-"TODO: run a validation on markers, numbered must contain a '#' and neither can
-"       match s:empty_item
-
 "variables (constants) for defining check directions for s:autolist_detect
 let s:dir_down = 1
 let s:dir_up = 0
 
 "variable (constant) for matching an empty list item
 let s:empty_item = "emptylistitem"
+
+"run a validation on markers, numbered must contain a '#' and neither can match
+" s:empty_item
+for s:marker in g:autolist_numbered_markers
+    if s:marker !~ "#"
+        echoerr "autolist, invalid marker: '" . s:marker . "' numbered markers must contain a '#'"
+        unlet g:loaded_autolist
+        finish
+    elseif s:marker == s:empty_item
+        echoerr "autolist, invalid marker: '" . s:marker . "' markers cannot match empty item marker"
+        unlet g:loaded_autolist
+        finish
+    endif
+endfor
+
+for s:marker in g:autolist_unordered_markers
+    if s:marker == s:empty_item
+        echoerr "autolist, invalid marker: '" . s:marker . "' markers cannot match empty item marker"
+        unlet g:loaded_autolist
+        finish
+    endif
+endfor
+
+"just to avoid any scoping issues
+unlet s:marker
 
 "= script functions ============================================================
 
