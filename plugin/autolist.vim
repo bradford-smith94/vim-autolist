@@ -15,7 +15,7 @@ if !exists('g:autolist_unordered_markers')
     let g:autolist_unordered_markers = ['-', '*']
 endif
 
-"variables (constants) for defining check directions for s:autolist_detect
+"variables (constants) for defining check directions for s:DetectListMarker
 let s:dir_down = 1
 let s:dir_up = 0
 
@@ -52,10 +52,10 @@ unlet s:marker
 "detect the list type and return the appropriate list marker
 "param: dir - the direction to search in, the value of this parameter should
 "only be s:dir_down or s:dir_up
-function s:autolist_detect(dir)
+function s:DetectListMarker(dir)
     "error check parameter
     if a:dir != s:dir_up && a:dir != s:dir_down
-        echoerr "autolist_detect, dir: invalid value: " . a:dir
+        echoerr "Autolist: DetectListMarker: dir: invalid value: " . a:dir
     endif
 
     "set l:check_line based on direction of search
@@ -117,8 +117,8 @@ function s:autolist_detect(dir)
 endfunction
 
 "continue a list by checking the previous line (insert item below)
-function! s:autolist_down()
-    let l:marker = <SID>autolist_detect(s:dir_down)
+function! s:ContinueDown()
+    let l:marker = <SID>DetectListMarker(s:dir_down)
 
     "don't do anything if we didn't match a list
     if (l:marker != "")
@@ -133,8 +133,8 @@ function! s:autolist_down()
 endfunction
 
 "continue a list by checking the next line (insert item above)
-function! s:autolist_up()
-    let l:marker = <SID>autolist_detect(s:dir_up)
+function! s:ContinueUp()
+    let l:marker = <SID>DetectListMarker(s:dir_up)
 
     "don't do anything if we didn't match a list
     if (l:marker != "")
@@ -154,25 +154,25 @@ endfunction
 "= helper functions ============================================================
 
 "for creating a new line with the `o` key
-function! s:AutolistNewLineBelow()
+function! s:NewLineBelow()
     execute "normal! o"
-    call <SID>autolist_down()
+    call <SID>ContinueDown()
     startinsert!
 endfunction
 
 "for creating a new line with the return key
-function! s:AutolistReturn()
+function! s:Return()
     "if cursor is at the end of the line or the line is empty
     if (col(".") == col("$") - 1 || getline(".") == "")
         "enter a newline call function
         execute "normal! a\<CR>"
-        call <SID>autolist_down()
+        call <SID>ContinueDown()
         startinsert!
     elseif (col(".") == 1) "if cursor is at the start
         "short deletes are saved in the "- register
         let l:tmp = @-
         execute "normal! Di\<CR>"
-        call <SID>autolist_down()
+        call <SID>ContinueDown()
         execute "normal! $\"-pa"
         let @- = l:tmp
         startinsert
@@ -180,7 +180,7 @@ function! s:AutolistReturn()
         "short deletes are saved in the "- register
         let l:tmp = @-
         execute "normal! lDa\<CR>"
-        call <SID>autolist_down()
+        call <SID>ContinueDown()
         execute "normal! $\"-pa"
         let @- = l:tmp
         startinsert
@@ -188,19 +188,19 @@ function! s:AutolistReturn()
 endfunction
 
 "for creating a new line with the `O` key
-function! s:AutolistNewLineAbove()
+function! s:NewLineAbove()
     execute "normal! O"
-    call <SID>autolist_up()
+    call <SID>ContinueUp()
     startinsert!
 endfunction
 
 "===============================================================================
 
 
-"= command mappings ============================================================
+"= create mappings =============================================================
 
-command! AutolistNewLineBelow call <SID>AutolistNewLineBelow()
-command! AutolistReturn call <SID>AutolistReturn()
-command! AutolistNewLineAbove call <SID>AutolistNewLineAbove()
+command! AutolistNewLineBelow call <SID>NewLineBelow()
+command! AutolistReturn call <SID>Return()
+command! AutolistNewLineAbove call <SID>NewLineAbove()
 
 "===============================================================================
