@@ -199,8 +199,8 @@ endfunction
 
 "= create mappings =============================================================
 
-command! AutolistNewLineBelow call <SID>NewLineBelow()
-command! AutolistReturn call <SID>Return()
-command! AutolistNewLineAbove call <SID>NewLineAbove()
+nnoremap <silent> <Plug>AutolistNewLineAbove :call <SID>NewLineAbove()<CR>
+nnoremap <silent> <Plug>AutolistNewLineBelow :call <SID>NewLineBelow()<CR>
+nnoremap <silent> <Plug>AutolistReturn :call <SID>Return()<CR>
 
 "===============================================================================

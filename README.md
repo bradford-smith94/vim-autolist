@@ -18,33 +18,28 @@ Or you can use the Pathogen method:
 Once installed and help tags have been generated you can read the help with `:help autolist`.
 
 ##Usage
-This plugin exposes commands:
+This plugin exposes normal mode mappings:
 ```
-    :AutolistNewLineAbove
-    :AutolistNewLineBelow
-    :AutolistReturn
+    <Plug>AutolistNewLineAbove
+    <Plug>AutolistNewLineBelow
+    <Plug>AutolistReturn
 ```
 
-These functions need to be mapped to keys or called directly in order to be
-used.
+These need to be mapped to keys in order to be used.
 
-A simple mapping example would be:
+A sample mapping example would be:
 ```
     "these are mapped for all filetypes all the time
-    inoremap <CR> <Esc>:AutolistReturn<CR>
-    nnoremap o :AutolistNewLineBelow<CR>
-    nnoremap O :AutolistNewLineAbove<CR>
+    imap <CR> <Esc><Plug>AutolistReturn
+    nmap o <Plug>AutolistNewLineBelow
+    nmap O <Plug>AutolistNewLineAbove
 ```
+
+Note: using the `noremap` family of mappings will **NOT** work because Vim needs to remap the command in order for the `<Plug>` style mappings to work.
 
 This example makes the `Enter` key in insert mode call autolist as well as the
 `o` and `O` keys in normal mode, so that while you are normally typing out a
 list autolist will work automatically.
-
-Or to use a command directly:
-```
-    "just type something like this then hit enter
-    :AutolistNewLineBelow
-```
 
 ##Configuration
 
@@ -52,14 +47,14 @@ In order to enable this plugin for specific filetypes you can make your
 mapping inside an autocmd; for example, the following makes a buffer local
 mapping for the enter key only in markdown files:
 ```
-    autocmd Filetype markdown inoremap <buffer> <CR> <Esc>:AutolistReturn<CR>
+    autocmd Filetype markdown imap <buffer> <CR> <Esc><Plug>AutolistReturn
 ```
 
 The other way to make filetype specific mappings would be to put the mapping in
 an ftplugin file.
 ```
     "in ~/.vim/ftplugin/markdown.vim
-    inoremap <buffer> <CR> <Esc>:AutolistReturn<CR>
+    imap <buffer> <CR> <Esc><Plug>AutolistReturn
 ```
 ###Defining custom markers
 
