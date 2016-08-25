@@ -72,7 +72,8 @@ function s:DetectListMarker(dir)
         let l:orig_marker = l:marker
         "substitute the '#' character for regex one or more digits
         "for some reason two pairs of backslashes were needed
-        let l:marker = substitute(l:marker, "#", "\\\\d\\\\+", "")
+        "pattern is '-\=\d\+' for an optional '-' and one or more digits
+        let l:marker = substitute(l:marker, "#", "-\\\\=\\\\d\\\\+", "")
 
         if l:check_line =~ '\v^\s*\V' . l:marker . '\v\s+\S+'
             "matched a non-empty list item
@@ -80,7 +81,7 @@ function s:DetectListMarker(dir)
 
             let l:marker = l:orig_marker
             "again substitute needed two pairs of backslashes
-            let l:marker = substitute(l:marker, "#.*", "\\\\zs\\\\d\\\\*", "")
+            let l:marker = substitute(l:marker, "#.*", "\\\\zs-\\\\=\\\\d\\\\*", "")
 
             let l:list_index = matchstr(l:check_line, '\v\s*\V' . l:marker)
 
