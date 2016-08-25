@@ -1,6 +1,6 @@
 *autolist.txt* Automatically continue lists.
 
-Author: Bradford Smith http://github.com/bradford-smith94
+Author: Bradford Smith https://github.com/bradford-smith94
 
 ==============================================================================
 INTRODUCTION                                                        *autolist*
@@ -86,7 +86,7 @@ CREDITS                                                     *autolist-credits*
 
 The idea for this plugin came from a gist posted by Github user sedm0784.
 See: https://www.github.com/sedm0784
-See: https://www.gist.github.com/sedm0784/dffda43bcfb4728f8e90
+See: https://gist.github.com/sedm0784/dffda43bcfb4728f8e90
 
 ==============================================================================
 
