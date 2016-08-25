@@ -1,11 +1,12 @@
-"autolist.vim
+"autolist.vim - Automatically continue lists.
+"Author: Bradford Smith <https://github.com/bradford-smith94>
 
 if exists('g:loaded_autolist') || &cp
     finish
 endif
 let g:loaded_autolist = 1
 
-"= variables ===================================================================
+"= variables {{{================================================================
 
 if !exists('g:autolist_numbered_markers')
     let g:autolist_numbered_markers = ['#.', '#)', '#-']
@@ -22,15 +23,30 @@ let s:dir_up = 0
 "variable (constant) for matching an empty list item
 let s:empty_item = "emptylistitem"
 
+"variables (constants) for matching list types
+let s:unset_list_type = "unset"
+let s:numbered_list_type = "numbered"
+let s:unordered_list_type = "unordered"
+
+"variable for checking numbered vs unordered lists (set in s:DetectListMarker)
+let s:list_type = s:unset_list_type
+"}}}============================================================================
+
+
+" = check markers {{{===========================================================
 "run a validation on markers, numbered must contain a '#' and neither can match
 " s:empty_item
+
 for s:marker in g:autolist_numbered_markers
+    "quick and dirty check for a '#'
     if s:marker !~ "#"
-        echoerr "autolist, invalid marker: '" . s:marker . "' numbered markers must contain a '#'"
+        echoerr "autolist: invalid marker: '" . s:marker .
+                    \ "' numbered markers must contain a '#'"
         unlet g:loaded_autolist
         finish
     elseif s:marker == s:empty_item
-        echoerr "autolist, invalid marker: '" . s:marker . "' markers cannot match empty item marker"
+        echoerr "autolist: invalid marker: '" . s:marker .
+                    \ "' markers cannot match the empty item marker"
         unlet g:loaded_autolist
         finish
     endif
@@ -38,7 +54,8 @@ endfor
 
 for s:marker in g:autolist_unordered_markers
     if s:marker == s:empty_item
-        echoerr "autolist, invalid marker: '" . s:marker . "' markers cannot match empty item marker"
+        echoerr "autolist: invalid marker: '" . s:marker .
+                    \ "' markers cannot match the empty item marker"
         unlet g:loaded_autolist
         finish
     endif
@@ -46,13 +63,15 @@ endfor
 
 "just to avoid any scoping issues
 unlet s:marker
+"}}}============================================================================
 
-"= script functions ============================================================
+
+"= functions {{{================================================================
 
 "detect the list type and return the appropriate list marker
 "param: dir - the direction to search in, the value of this parameter should
 "only be s:dir_down or s:dir_up
-function s:DetectListMarker(dir)
+function s:DetectListMarker(dir) "{{{
     "error check parameter
     if a:dir != s:dir_up && a:dir != s:dir_down
         echoerr "Autolist: DetectListMarker: dir: invalid value: " . a:dir
@@ -94,9 +113,12 @@ function s:DetectListMarker(dir)
 
             let l:marker = l:orig_marker
             let l:marker = substitute(l:marker, "#", l:list_index, "")
+
+            let s:list_type = s:numbered_list_type
             return l:list_indent . l:marker . l:list_sep
         elseif l:check_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
             "matched an empty list item
+            let s:list_type = s:unset_list_type
             return s:empty_item
         endif
     endfor
@@ -107,18 +129,21 @@ function s:DetectListMarker(dir)
             "matched a non-empty list item
             let l:list_sep = matchstr(l:check_line, '\v^\s*\V' . l:marker . '\v\zs\s+')
 
+            let s:list_type = s:unordered_list_type
             return l:list_indent . l:marker . l:list_sep
         elseif l:check_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
             "matched an empty list item
+            let s:list_type = s:unset_list_type
             return s:empty_item
         endif
     endfor
 
+    let s:list_type = s:unset_list_type
     return ""
-endfunction
+endfunction "}}}
 
 "continue a list by checking the previous line (insert item below)
-function! s:ContinueDown()
+function! s:ContinueDown() "{{{
     let l:marker = <SID>DetectListMarker(s:dir_down)
 
     "don't do anything if we didn't match a list
@@ -131,10 +156,10 @@ function! s:ContinueDown()
             call setline(".", l:marker)
         endif
     endif
-endfunction
+endfunction "}}}
 
 "continue a list by checking the next line (insert item above)
-function! s:ContinueUp()
+function! s:ContinueUp() "{{{
     let l:marker = <SID>DetectListMarker(s:dir_up)
 
     "don't do anything if we didn't match a list
@@ -147,12 +172,34 @@ function! s:ContinueUp()
             call setline(".", l:marker)
         endif
     endif
-endfunction
+endfunction "}}}
 
-"===============================================================================
+"renumber a numbered list
+function! s:Renumber() "{{{
+    let l:marker = <SID>DetectListMarker(s:dir_down)
+
+    "if list type isn't set try checking the up direction
+    if (s:list_type == s:unset_list_type)
+        let l:marker = <SID>DetectListMarker(s:dir_up)
+
+        "if list type still isn't set just return without doing anything
+        if (s:list_type == s:unset_list_type)
+            return
+        endif
+    endif
+
+    "if we aren't in a numbered list just return without doing anything
+    if (s:list_type != s:numbered_list_type)
+        return
+    endif
+
+    "TODO: renumber this list!
+endfunction "}}}
+
+"}}}============================================================================
 
 
-"= helper functions ============================================================
+"= helper functions {{{=========================================================
 
 "for creating a new line with the `o` key
 function! s:NewLineBelow()
@@ -195,13 +242,15 @@ function! s:NewLineAbove()
     startinsert!
 endfunction
 
-"===============================================================================
+"}}}============================================================================
 
 
-"= create mappings =============================================================
+"= create user mappings/commands {{{============================================
 
 nnoremap <silent> <Plug>AutolistNewLineAbove :call <SID>NewLineAbove()<CR>
 nnoremap <silent> <Plug>AutolistNewLineBelow :call <SID>NewLineBelow()<CR>
 nnoremap <silent> <Plug>AutolistReturn :call <SID>Return()<CR>
 
-"===============================================================================
+command! AutolistRenumber call <SID>Renumber()<CR>
+
+"}}}============================================================================
