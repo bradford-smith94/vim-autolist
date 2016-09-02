@@ -12,7 +12,7 @@ if !exists('g:autolist_numbered_markers')
 endif
 
 if !exists('g:autolist_unordered_markers')
-    let g:autolist_unordered_markers = ['-', '*']
+    let g:autolist_unordered_markers = ['-', '*', '+']
 endif
 
 "variables (constants) for defining check directions for s:DetectListMarker

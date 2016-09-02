@@ -70,7 +70,7 @@ vimrc or other configuration file to change what markers autolist will
 recognize. >
 
     g:autolist_numbered_markers = ['#.', '#)', '#-']
-    g:autolist_unordered_markers = ['-', '*']
+    g:autolist_unordered_markers = ['-', '*', '+']
 <
 
 Numbered markers must contain a `#` character, this is where autolist will
