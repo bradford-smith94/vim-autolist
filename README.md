@@ -1,9 +1,9 @@
-#vim-autolist
+# vim-autolist
 A plugin that automatically continues lists.
 
 When typing out a list, going to the next line will automatically insert your list marker.
 
-##Installation
+## Installation
 You can install with Vundle or similar plugin managers using:
 ```
     Plugin 'bradford-smith94/vim-autolist'
@@ -17,7 +17,7 @@ Or you can use the Pathogen method:
 
 Once installed and help tags have been generated you can read the help with `:help autolist`.
 
-##Usage
+## Usage
 This plugin exposes normal mode mappings:
 ```
     <Plug>AutolistNewLineAbove
@@ -41,7 +41,7 @@ This example makes the `Enter` key in insert mode call autolist as well as the
 `o` and `O` keys in normal mode, so that while you are normally typing out a
 list autolist will work automatically.
 
-##Configuration
+## Configuration
 
 In order to enable this plugin for specific filetypes you can make your
 mapping inside an autocmd; for example, the following makes a buffer local
@@ -56,7 +56,8 @@ an ftplugin file.
     "in ~/.vim/ftplugin/markdown.vim
     imap <buffer> <CR> <Esc><Plug>AutolistReturn
 ```
-###Defining custom markers
+
+### Defining custom markers
 
 The list markers that are detected by autolist can be configured. The
 following variables will set the recognized markers for ordered and unordered
@@ -77,5 +78,5 @@ empty item (line with just a marker and whitespace) so that it can delete it
 automatically.
 
 
-##Credits
+## Credits
 I got the idea for this plugin from [sedm0784](https://www.github.com/sedm0784)'s gist [Vim Auto List Completion](https://gist.github.com/sedm0784/dffda43bcfb4728f8e90).
