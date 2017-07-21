@@ -174,7 +174,7 @@ function! s:Return()
         let l:tmp = @-
         execute "normal! Di\<CR>"
         call <SID>ContinueDown()
-        execute "normal! $\"-pa"
+        execute "normal! $\"-pg;"
         let @- = l:tmp
         startinsert
     else "else cursor is somewhere in the middle of the line
@@ -182,7 +182,7 @@ function! s:Return()
         let l:tmp = @-
         execute "normal! lDa\<CR>"
         call <SID>ContinueDown()
-        execute "normal! $\"-pa"
+        execute "normal! \"-pg;"
         let @- = l:tmp
         startinsert
     endif
