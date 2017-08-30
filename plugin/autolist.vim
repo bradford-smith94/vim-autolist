@@ -129,6 +129,7 @@ function! s:ContinueDown()
         else
             "marker is next list item, continue the list
             call setline(".", l:marker)
+            normal! $
         endif
     endif
 endfunction
@@ -145,6 +146,7 @@ function! s:ContinueUp()
         else
             "marker is a list item, continue the list
             call setline(".", l:marker)
+            normal! $
         endif
     endif
 endfunction
