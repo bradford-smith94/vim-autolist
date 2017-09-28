@@ -72,14 +72,14 @@ function s:DetectListMarker(dir)
         let l:orig_marker = l:marker
         "substitute the '#' character for an optional '-' and one or more
         "digits, this matches numbers (optionally negative)
-        let l:marker = substitute(l:marker, '#', '-\=\d\+', '')
+        let l:marker = substitute(l:marker, '#', '-\\=\\d\\+', '')
 
         if l:check_line =~ '\v^\s*\V' . l:marker . '\v\s+\S+'
             "matched a non-empty list item
             let l:list_sep = matchstr(l:check_line, '\v^\s*\V' . l:marker . '\v\zs\s+')
 
             let l:marker = l:orig_marker
-            let l:marker = substitute(l:marker, '#.*', '\zs-\=\d\*', '')
+            let l:marker = substitute(l:marker, '#.*', '\\zs-\\=\\d\\*', '')
 
             let l:list_index = matchstr(l:check_line, '\v\s*\V' . l:marker)
 
