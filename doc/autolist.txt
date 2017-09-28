@@ -5,7 +5,7 @@ Author: Bradford Smith https://github.com/bradford-smith94
 ==============================================================================
 INTRODUCTION                                                        *autolist*
 
-This plugin automatically continues lists. When typing out a list, going to 
+This plugin automatically continues lists. When typing out a list, going to
 the next line will automatically insert your list marker.
 
 ------------------------------------------------------------------------------
@@ -15,6 +15,7 @@ CONTENTS:                                                  *autolist-contents*
     Contents............|autolist-contents|
     Usage...............|autolist-usage|
     Configuration.......|autolist-config|
+    ...Custom Marks.....|autolist-custom-marks|
     Credits.............|autolist-credits|
 
 ------------------------------------------------------------------------------
@@ -27,17 +28,24 @@ This plugin exposes normal mode mappings: >
     <Plug>AutolistReturn
 <
 
+It also exposes one insert mode mapping: >
+    <Plug>AutolistReturn
+<
+
+(The `AutolistReturn` normal mode mapping is only for backwards compatibility,
+the insert mode mapping looks cleaner).
+
 These functions need to be mapped to keys in order to be used.
 
 A sample |mapping| example would be: >
 
     "these are mapped for all filetypes all the time
-    imap <CR> <Esc><Plug>AutolistReturn
+    imap <CR> <Plug>AutolistReturn
     nmap o <Plug>AutolistNewLineBelow
     nmap O <Plug>AutolistNewLineAbove
 <
 
-Note: using the |'noremap'| family of mappings will NOT work because Vim needs 
+Note: using the |'noremap'| family of mappings will NOT work because Vim needs
 to remap the command in order for the <Plug> style mappings to work.
 
 This example makes the {Enter} key in insert mode call autolist as well as the
@@ -51,21 +59,22 @@ In order to enable this plugin for specific |filetypes| you can make your
 mapping inside an |autocmd|; for example, the following makes a buffer local
 mapping for the enter key only in markdown files: >
 
-    autocmd Filetype markdown imap <buffer> <CR> <Esc><Plug>AutolistReturn
+    autocmd Filetype markdown imap <buffer> <CR> <Plug>AutolistReturn
 <
 
-The other way to make filetype specific mappings would be to put the mapping 
+The other way to make filetype specific mappings would be to put the mapping
 in an |ftplugin| file. >
 
     "in ~/.vim/ftplugin/markdown.vim
-    imap <buffer> <CR> <Esc><Plug>AutolistReturn
+    imap <buffer> <CR> <Plug>AutolistReturn
 <
 
+                                                       *autolist-custom-marks*
 Defining Custom Markers~
 
-The list markers that are detected by autolist can be configured. The 
-following variables will set the recognized markers for ordered and unordered 
-lists respectively, their default values are shown. Override these in your 
+The list markers that are detected by autolist can be configured. The
+following variables will set the recognized markers for ordered and unordered
+lists respectively, their default values are shown. Override these in your
 vimrc or other configuration file to change what markers autolist will
 recognize. >
 
@@ -77,7 +86,7 @@ Numbered markers must contain a `#` character, this is where autolist will
 insert the list item number.
 
 Markers must not have the value `emptylistitem` (and why would they anyway?)
-this is the value autolist uses to internally recognize when it matches an 
+this is the value autolist uses to internally recognize when it matches an
 empty item (line with just a marker and whitespace) so that it can delete it
 automatically.
 
