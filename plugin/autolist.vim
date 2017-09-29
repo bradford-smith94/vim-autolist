@@ -15,9 +15,10 @@ if !exists('g:autolist_unordered_markers')
     let g:autolist_unordered_markers = ['-', '*', '+']
 endif
 
-"variables (constants) for defining check directions for s:DetectListMarker
-let s:dir_down = 1
-let s:dir_up = 0
+"variables (constants) for defining check directions, their values allow them to
+"be added to the current line number to check for a possible previous list item
+let s:dir_down = -1
+let s:dir_up = 1
 
 "variable (constant) for matching an empty list item
 let s:empty_item = 'emptylistitem'
@@ -59,11 +60,7 @@ function s:DetectListMarker(dir)
     endif
 
     "set l:check_line based on direction of search
-    if a:dir == s:dir_down
-        let l:check_line = getline(line('.') - 1)
-    else
-        let l:check_line = getline(line('.') + 1)
-    endif
+    let l:check_line = getline(line('.') + a:dir)
 
     let l:list_indent = matchstr(l:check_line, '\v^\s*')
 
@@ -115,35 +112,15 @@ function s:DetectListMarker(dir)
     return ''
 endfunction
 
-"continue a list by checking the previous line (insert item below)
-function! s:ContinueDown()
-    let l:marker = <SID>DetectListMarker(s:dir_down)
+"continue a list in the given direction 'dir'
+function! s:ContinueList(dir)
+    let l:marker = <SID>DetectListMarker(a:dir)
 
-    "don't do anything if we didn't match a list
     if (l:marker !=? '')
         if (l:marker == s:empty_item)
-            "previous line was an empty item, clear it
-            call setline(line('.') - 1, '')
+            call setline(line('.') + a:dir, '')
         else
-            "marker is next list item, continue the list
-            call setline('.', l:marker)
-            normal! $
-        endif
-    endif
-endfunction
-
-"continue a list by checking the next line (insert item above)
-function! s:ContinueUp()
-    let l:marker = <SID>DetectListMarker(s:dir_up)
-
-    "don't do anything if we didn't match a list
-    if (l:marker !=? '')
-        if (l:marker == s:empty_item)
-            "next line was an empty item, clear it
-            call setline(line('.') + 1, '')
-        else
-            "marker is a list item, continue the list
-            call setline('.', l:marker)
+            call setline(line('.'), l:marker)
             normal! $
         endif
     endif
@@ -157,7 +134,7 @@ endfunction
 "for creating a new line with the `o` key
 function! s:NewLineBelow()
     execute 'normal! o'
-    call <SID>ContinueDown()
+    call <SID>ContinueList(s:dir_down)
     startinsert!
 endfunction
 
@@ -167,13 +144,13 @@ function! s:Return()
     if (col('.') == col('$') - 1 || getline('.') ==? '')
         "enter a newline call function
         execute "normal! a\<CR>"
-        call <SID>ContinueDown()
+        call <SID>ContinueList(s:dir_down)
         startinsert!
     elseif (col('.') == 1) "if cursor is at the start
         "short deletes are saved in the "- register
         let l:tmp = @-
         execute "normal! Di\<CR>"
-        call <SID>ContinueDown()
+        call <SID>ContinueList(s:dir_down)
         execute 'normal! $"-pg;'
         let @- = l:tmp
         startinsert
@@ -181,7 +158,7 @@ function! s:Return()
         "short deletes are saved in the "- register
         let l:tmp = @-
         execute "normal! lDa\<CR>"
-        call <SID>ContinueDown()
+        call <SID>ContinueList(s:dir_down)
         execute 'normal! "-pg;'
         let @- = l:tmp
         startinsert
@@ -192,6 +169,16 @@ endfunction
 function! s:NewLineAbove()
     execute 'normal! O'
     call <SID>ContinueUp()
+        execute 'normal! "-pg;'
+        let @- = l:tmp
+        startinsert
+    endif
+endfunction
+
+"for creating a new line with the `O` key
+function! s:NewLineAbove()
+    execute 'normal! O'
+    call <SID>ContinueList(s:dir_up)
     startinsert!
 endfunction
 
