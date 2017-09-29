@@ -200,12 +200,8 @@ endfunction
 
 "= create mappings =============================================================
 
-"intended for o/O keys
 nnoremap <silent> <Plug>AutolistNewLineAbove :call <SID>NewLineAbove()<CR>
 nnoremap <silent> <Plug>AutolistNewLineBelow :call <SID>NewLineBelow()<CR>
-
-"intended for enter/return key, nnoremap left for backwards compatibility
 nnoremap <silent> <Plug>AutolistReturn :call <SID>Return()<CR>
-inoremap <silent> <Plug>AutolistReturn <C-o>:call <SID>Return()<CR>
 
 "===============================================================================

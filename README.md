@@ -25,18 +25,12 @@ This plugin exposes normal mode mappings:
     <Plug>AutolistReturn
 ```
 
-It also exposes one insert mode mapping:
-```
-    <Plug>AutolistReturn
-```
-(The `AutolistReturn` normal mode mapping is only for backwards compatibility, the insert mode mapping looks cleaner).
-
 These need to be mapped to keys in order to be used.
 
 A sample mapping example would be:
 ```
     "these are mapped for all filetypes all the time
-    imap <CR> <Plug>AutolistReturn
+    imap <CR> <Esc><Plug>AutolistReturn
     nmap o <Plug>AutolistNewLineBelow
     nmap O <Plug>AutolistNewLineAbove
 ```
@@ -53,7 +47,7 @@ In order to enable this plugin for specific filetypes you can make your
 mapping inside an autocmd; for example, the following makes a buffer local
 mapping for the enter key only in markdown files:
 ```
-    autocmd Filetype markdown imap <buffer> <CR> <Plug>AutolistReturn
+    autocmd Filetype markdown imap <buffer> <CR> <Esc><Plug>AutolistReturn
 ```
 
 The other way to make filetype specific mappings would be to put the mapping in
