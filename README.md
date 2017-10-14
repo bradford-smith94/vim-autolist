@@ -1,7 +1,8 @@
 # vim-autolist
 A plugin that automatically continues lists.
 
-When typing out a list, going to the next line will automatically insert your list marker.
+When typing out a list, going to the next line will automatically insert your
+list marker.
 
 ## Installation
 You can install with Vundle or similar plugin managers using:
@@ -15,7 +16,8 @@ Or you can use the Pathogen method:
     git clone git://github.com/bradford-smith94/vim-autolist.git
 ```
 
-Once installed and help tags have been generated you can read the help with `:help autolist`.
+Once installed and help tags have been generated you can read the help with
+`:help autolist`.
 
 ## Usage
 This plugin exposes normal mode mappings:
@@ -35,7 +37,8 @@ A sample mapping example would be:
     nmap O <Plug>AutolistNewLineAbove
 ```
 
-Note: using the `noremap` family of mappings will **NOT** work because Vim needs to remap the command in order for the `<Plug>` style mappings to work.
+Note: using the `noremap` family of mappings will **NOT** work because Vim needs
+to remap the command in order for the `<Plug>` style mappings to work.
 
 This example makes the `Enter` key in insert mode call autolist as well as the
 `o` and `O` keys in normal mode, so that while you are normally typing out a
@@ -57,7 +60,7 @@ an ftplugin file.
     imap <buffer> <CR> <Esc><Plug>AutolistReturn
 ```
 
-### Defining custom markers
+### Defining Custom Markers
 
 The list markers that are detected by autolist can be configured. The
 following variables will set the recognized markers for ordered and unordered
@@ -72,11 +75,33 @@ recognize.
 Numbered markers must contain a `#` character, this is where autolist will
 insert the list item number.
 
+If your marker needs to have a `\` in it then you need to place two in a row
+(`\\`), this properly escapes it so that autolist can use it as a regular
+expression in order to recognize it.
+
 Markers must not have the value `emptylistitem` (and why would they anyway?)
 this is the value autolist uses to internally recognize when it matches an
 empty item (line with just a marker and whitespace) so that it can delete it
 automatically.
 
+#### Buffer Local Markers
+
+List markers can also be defined buffer-locally using
+`b:autolist_numbered_markers` and `b:autolist_unordered_markers`. These
+variables have the same syntax as their global counterparts. By default autolist
+will check for buffer-local markers as well as global markers, if you only want
+the buffer-local ones to be checked you can define either
+```
+    g:autolist_override_global_markers = 1
+```
+or
+```
+    b:autolist_override_global_markers = 1
+```
+in order to always override or override for this buffer respectively.
+
 
 ## Credits
-I got the idea for this plugin from [sedm0784](https://www.github.com/sedm0784)'s gist [Vim Auto List Completion](https://gist.github.com/sedm0784/dffda43bcfb4728f8e90).
+I got the idea for this plugin from
+[sedm0784](https://www.github.com/sedm0784)'s gist [Vim Auto List
+Completion](https://gist.github.com/sedm0784/dffda43bcfb4728f8e90).

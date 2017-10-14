@@ -1,6 +1,8 @@
 *autolist.txt* Automatically continue lists.
 
-Author: Bradford Smith https://github.com/bradford-smith94
+Author:     Bradford Smith https://github.com/bradford-smith94
+Homepage:   https://github.com/bradford-smith94/vim-autolist
+License:    MIT
 
 ==============================================================================
 INTRODUCTION                                                        *autolist*
@@ -11,12 +13,14 @@ the next line will automatically insert your list marker.
 ------------------------------------------------------------------------------
 CONTENTS:                                                  *autolist-contents*
 
-    Introduction........|autolist|
-    Contents............|autolist-contents|
-    Usage...............|autolist-usage|
-    Configuration.......|autolist-config|
-    ...Custom Marks.....|autolist-custom-marks|
-    Credits.............|autolist-credits|
+    Introduction..................|autolist|
+    Contents......................|autolist-contents|
+    Usage.........................|autolist-usage|
+    Configuration.................|autolist-config|
+    ...Custom Markers.............|autolist-custom-markers|
+    ...Buffer Local Markers.......|autolist-buffer-local-markers|
+    Issues........................|autolist-issues|
+    Credits.......................|autolist-credits|
 
 ------------------------------------------------------------------------------
 USAGE                                                         *autolist-usage*
@@ -62,7 +66,9 @@ in an |ftplugin| file. >
     imap <buffer> <CR> <Esc><Plug>AutolistReturn
 <
 
-                                                       *autolist-custom-marks*
+                                                *g:autolist_unordered_markers*
+                                                 *g:autolist_numbered_markers*
+                                                     *autolist-custom-markers*
 Defining Custom Markers~
 
 The list markers that are detected by autolist can be configured. The
@@ -78,10 +84,37 @@ recognize. >
 Numbered markers must contain a `#` character, this is where autolist will
 insert the list item number.
 
+If your marker needs to have a `\` character in it then you need place two in
+a row (`\\`), this properly escapes it so that autolist can use it as a
+regular expression in order to recognize it.
+
 Markers must not have the value `emptylistitem` (and why would they anyway?)
 this is the value autolist uses to internally recognize when it matches an
 empty item (line with just a marker and whitespace) so that it can delete it
 automatically.
+
+                                                *b:autolist_unordered_markers*
+                                                 *b:autolist_numbered_markers*
+                                          *g:autolist_override_global_markers*
+                                          *b:autolist_override_global_markers*
+                                               *autolist-buffer-local-markers*
+Buffer Local Markers~
+
+List markers can also be defined buffer-locally using
+`b:autolist_numbered_markers` and `b:autolist_unordered_markers`. These
+variables have the same syntax as their global counterparts. By default
+autolist will check for buffer-local markers as well as global markers, if you
+only want the buffer-local ones to be checked you can define either >
+    g:autolist_override_global_markers = 1
+< or >
+    b:autolist_override_global_markers = 1
+< in order to always override or override for this buffer respectively.
+
+------------------------------------------------------------------------------
+ISSUES                                                       *autolist-issues*
+
+Any bugs or issues can be reported at:
+https://github.com/bradford-smith94/vim-autolist/issues
 
 ------------------------------------------------------------------------------
 CREDITS                                                     *autolist-credits*
