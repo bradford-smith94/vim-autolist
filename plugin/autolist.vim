@@ -15,10 +15,9 @@ if !exists('g:autolist_unordered_markers')
     let g:autolist_unordered_markers = ['-', '*', '+']
 endif
 
-"variables (constants) for defining check directions, their values allow them to
-"be added to the current line number to check for a possible previous list item
-let s:dir_down = -1
-let s:dir_up = 1
+if !exists('g:autolist_override_global_markers')
+    let g:autolist_override_global_markers = 0
+endif
 
 "variable (constant) for matching an empty list item
 let s:empty_item = 'emptylistitem'
@@ -64,8 +63,32 @@ function s:DetectListMarker(dir)
 
     let l:list_indent = matchstr(l:check_line, '\v^\s*')
 
+    if exists('b:autolist_numbered_markers')
+        if g:autolist_override_global_markers ||
+                    \ exists('b:autolist_override_global_markers')
+                    \ && b:autolist_override_global_markers
+            let l:numbered_markers = b:autolist_numbered_markers
+        else
+            let l:numbered_markers = b:autolist_numbered_markers + g:autolist_numbered_markers
+        endif
+    else
+        let l:numbered_markers = g:autolist_numbered_markers
+    endif
+
+    if exists('b:autolist_unordered_markers')
+        if g:autolist_override_global_markers ||
+                    \ exists('b:autolist_override_global_markers')
+                    \ && b:autolist_override_global_markers
+            let l:unordered_markers = b:autolist_unordered_markers
+        else
+            let l:unordered_markers = b:autolist_unordered_markers + g:autolist_unordered_markers
+        endif
+    else
+        let l:unordered_markers = g:autolist_unordered_markers
+    endif
+
     "check for numbered markers
-    for l:marker in g:autolist_numbered_markers
+    for l:marker in l:numbered_markers
         let l:orig_marker = l:marker
         "substitute the '#' character for an optional '-' and one or more
         "digits, this matches numbers (optionally negative)
@@ -89,6 +112,7 @@ function s:DetectListMarker(dir)
 
             let l:marker = l:orig_marker
             let l:marker = substitute(l:marker, '#', l:list_index, '')
+            let l:marker = substitute(l:marker, '\\\\', '\', '')
             return l:list_indent . l:marker . l:list_sep
         elseif l:check_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
             "matched an empty list item
@@ -97,11 +121,12 @@ function s:DetectListMarker(dir)
     endfor
 
     "check for unordered markers
-    for l:marker in g:autolist_unordered_markers
+    for l:marker in l:unordered_markers
         if l:check_line =~ '\v^\s*\V' . l:marker . '\v\s+\S+'
             "matched a non-empty list item
             let l:list_sep = matchstr(l:check_line, '\v^\s*\V' . l:marker . '\v\zs\s+')
 
+            let l:marker = substitute(l:marker, '\\\\', '\', '')
             return l:list_indent . l:marker . l:list_sep
         elseif l:check_line =~ '\v^\s*\V' . l:marker . '\v\s*$'
             "matched an empty list item
@@ -159,16 +184,6 @@ function! s:Return()
         let l:tmp = @-
         execute "normal! lDa\<CR>"
         call <SID>ContinueList(s:dir_down)
-        execute 'normal! "-pg;'
-        let @- = l:tmp
-        startinsert
-    endif
-endfunction
-
-"for creating a new line with the `O` key
-function! s:NewLineAbove()
-    execute 'normal! O'
-    call <SID>ContinueUp()
         execute 'normal! "-pg;'
         let @- = l:tmp
         startinsert
