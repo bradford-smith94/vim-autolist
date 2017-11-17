@@ -19,6 +19,11 @@ if !exists('g:autolist_override_global_markers')
     let g:autolist_override_global_markers = 0
 endif
 
+"variables (constants) for defining check directions, their values allow them to
+"be added to the current line number to check for a possible previous list item
+let s:dir_down = -1
+let s:dir_up = 1
+
 "variable (constant) for matching an empty list item
 let s:empty_item = 'emptylistitem'
 
