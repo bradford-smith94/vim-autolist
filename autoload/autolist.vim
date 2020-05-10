@@ -47,6 +47,9 @@ endfunction
 "for creating a new line with the `O` key
 function! autolist#NewLineAbove() abort
     execute 'normal! O'
+    normal! jmt}mb't
+    .,'bnormal!
+    normal! 'tk
     call <SID>ContinueList(s:dir_up)
     startinsert!
 endfunction
